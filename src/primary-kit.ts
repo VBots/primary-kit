@@ -106,7 +106,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     /**
      * Create
      */
-    public Create(vk: VK) {
+    public static Create(vk: VK) {
         return new PrimaryKit(vk);
     }
 
@@ -139,6 +139,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     public UseScene() {
         this.using.scene = true;
         this.kit.sceneManager = new SceneManager();
+        return this;
     }
 
     /**
@@ -147,6 +148,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     public UseHear() {
         this.using.hear = true;
         this.kit.hearManager = new HearManager<MessageContext>();
+        return this;
     }
 
     /**
@@ -158,6 +160,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
         }
         this.using.CMenu = true;
         this.kit.menuManager = new CMenuManager<MessageContext>(menuGenerator, this.kit.hearManager);
+        return this;
     }
 
     /**
@@ -191,6 +194,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
                 console.error('Error:', error);
             }
         });
+        return this;
     }
 
     /**
@@ -208,6 +212,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
             useProfiler,
             MyProfiler,
         };
+        return this;
     }
 
     /**
@@ -215,6 +220,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
      */
     public UseCooldown() {
         this.using.cooldown = true;
+        return this;
     }
 
     /**
@@ -222,6 +228,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
      */
     public UseConversationAppeal() {
         this.using.conversationAppeal = true;
+        return this;
     }
 
     /**
@@ -233,6 +240,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
             ToMenu,
             ToMenuText,
         };
+        return this;
     }
 
     /**
@@ -306,6 +314,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
         }
 
         this.generated = true;
+        return this;
     }
 
     public get Kit(): IKit {
