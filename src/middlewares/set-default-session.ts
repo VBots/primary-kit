@@ -8,7 +8,7 @@ import { ISession } from '../types';
  * @param defaultMenu Состояние меню по умолчанию
  * @param callback Колбэк постобработки для сессии
  */
-export const setDefaultSessionMiddleware = ({
+export const setDefaultSessionMiddleware = <PF extends typeof Profiler>({
     defaultMenu,
     callback,
     useProfiler,
@@ -17,7 +17,7 @@ export const setDefaultSessionMiddleware = ({
     defaultMenu?: CMenu;
     callback?: Function;
     useProfiler: boolean;
-    MyProfiler?: typeof Profiler;
+    MyProfiler?: PF;
 }) => async (context: MessageContext, next: Function) => {
     const session: ISession = context.session;
 

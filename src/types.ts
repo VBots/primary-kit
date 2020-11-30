@@ -8,31 +8,20 @@ import { IProfilerPayload, Profiler } from './models';
 
 export type IContext = MessageContext & IContextScene & IContextCustom;
 
-export interface IInitFull {
+export interface IInitFull<PF extends typeof Profiler> extends IDefaultSession<PF> {
     useSession?: boolean;
     useSessionStorage?: boolean;
-    storageName?: string;
-
+    useScene?: boolean;
+    useHear?: boolean;
+    useCMenu?: boolean;
+    useSkipOutMessage?: boolean;
     useDefaultSession?: boolean;
     useConversationAppeal?: boolean;
     useCooldown?: boolean;
-    useProfiler?: boolean;
-    MyProfiler?: typeof Profiler;
 
-    useHear?: boolean;
-    useCMenu?: boolean;
-    defaultMenu?: CMenu;
     menuGenerator?: IKeyboardGenerator;
-
-    useSkipOutMessage?: boolean;
-    callbackDefaultSession?: (context: MessageContext, next: Function) => void;
-
-    useScene?: boolean;
-    sceneIntercept: {
-        CancelSceneMenu?: CMenu;
-        ToMenu?: CMenu;
-        ToMenuText?: string;
-    };
+    storageName?: string;
+    sceneIntercept: ISceneIntercept;
 }
 
 export interface IKit {
@@ -41,6 +30,32 @@ export interface IKit {
     hearManager?: HearManager<MessageContext>;
     menuManager?: CMenuManager<MessageContext>;
     sceneManager?: SceneManager;
+}
+
+export interface IUsing<PF extends typeof Profiler> {
+    session: boolean;
+    sessionStorage: boolean;
+    scene: boolean;
+    hear: boolean;
+    CMenu: boolean;
+    skipMessage: boolean;
+    cooldown: boolean;
+    conversationAppeal: boolean;
+    defaultSession: IDefaultSession<PF>;
+    sceneIntercept: ISceneIntercept;
+}
+
+export interface IDefaultSession<PF extends typeof Profiler> {
+    defaultMenu?: CMenu;
+    callbackDefaultSession?: (context: MessageContext, next: Function) => void;
+    useProfiler?: boolean;
+    MyProfiler?: PF;
+}
+
+export interface ISceneIntercept {
+    CancelSceneMenu?: CMenu;
+    ToMenu?: CMenu;
+    ToMenuText?: string;
 }
 
 export interface ISession {
