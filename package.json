@@ -1,7 +1,7 @@
 {
     "name": "@vbots/primary-kit",
     "description": "Primary kit for vk-io library",
-    "version": "0.1.4-alpha.2",
+    "version": "0.1.4-alpha.3",
     "main": "lib/index",
     "types": "lib/index.d.ts",
     "author": "xTCry [Vladislav Kh] (https://github.com/xTCry/)",
@@ -11,8 +11,8 @@
         "pub_": "yarn _prepare && npm publish --access public",
         "_prepare": "yarn run rollup:build && yarn run test",
         "build": "yarn run rollup:build",
-        "test": "echo \"Ok\"",
         "watch": "yarn run rollup:build -w",
+        "test": "echo \"Ok\"",
         "rollup:build": "rollup -c rollup.config.ts"
     },
     "devDependencies": {
