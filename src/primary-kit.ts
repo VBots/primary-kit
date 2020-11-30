@@ -168,6 +168,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
      */
     public UseSkipMessage({
         ignoreChat = false,
+        ignoreDM = false,
         ignoreUser = false,
         ignoreFromUser = false,
         ignoreGroup = false,
@@ -179,6 +180,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
                 if (
                     context.isOutbox ||
                     (context.isChat && ignoreChat) ||
+                    (context.isDM && ignoreDM) ||
                     (context.isFromUser && ignoreUser) ||
                     (context.isUser && ignoreFromUser) ||
                     (context.isGroup && ignoreGroup) ||
@@ -249,7 +251,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     public Generate() {
         const { vk, kit, using } = this;
         if (this.generated) {
-            return;
+            return this;
         }
 
         // Handle message payload
@@ -315,6 +317,26 @@ export class PrimaryKit<PF extends typeof Profiler> {
 
         this.generated = true;
         return this;
+    }
+
+    public get kitStorage() {
+        return this.kit.storage!;
+    }
+
+    public get kitSessionManager() {
+        return this.kit.sessionManager!;
+    }
+
+    public get kitHearManager() {
+        return this.kit.hearManager!;
+    }
+
+    public get kitMenuManager() {
+        return this.kit.menuManager!;
+    }
+
+    public get kitSceneManager() {
+        return this.kit.sceneManager!;
     }
 
     public get Kit(): IKit {
