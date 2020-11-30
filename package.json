@@ -8,6 +8,7 @@
     "license": "MIT",
     "scripts": {
         "up": "npm version patch",
+        "pub_": "npm publish --access public",
         "_prepare": "yarn run rollup:build && yarn run test",
         "build": "yarn run rollup:build",
         "watch": "yarn run rollup:build -w",
