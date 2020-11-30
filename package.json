@@ -1,7 +1,7 @@
 {
     "name": "@vbots/primary-kit",
     "description": "Primary kit for vk-io library",
-    "version": "0.1.4-alpha.3",
+    "version": "0.1.5-alpha.5",
     "main": "lib/index",
     "types": "lib/index.d.ts",
     "author": "xTCry [Vladislav Kh] (https://github.com/xTCry/)",
