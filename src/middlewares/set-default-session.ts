@@ -1,14 +1,13 @@
 import { CMenu, cmdMenu } from '@vbots/cmenu';
-import { MessageContext } from 'vk-io';
 import { Profiler } from '../models';
-import { ISession } from '../types';
+import { IMessageContext } from '../types';
 
 /**
  * Установка значений в сессии по умолчанию
  * @param defaultMenu Состояние меню по умолчанию
  * @param callback Колбэк постобработки для сессии
  */
-export const setDefaultSessionMiddleware = <PF extends typeof Profiler>({
+export const setDefaultSessionMiddleware = <PF extends Profiler, PFT extends typeof Profiler>({
     defaultMenu,
     callback,
     useProfiler,
@@ -17,9 +16,9 @@ export const setDefaultSessionMiddleware = <PF extends typeof Profiler>({
     defaultMenu?: CMenu;
     callback?: Function;
     useProfiler: boolean;
-    MyProfiler?: PF;
-}) => async (context: MessageContext, next: Function) => {
-    const session: ISession = context.session;
+    MyProfiler?: PFT;
+}) => async (context: IMessageContext<PF>, next: Function) => {
+    const session = context.session;
 
     if (defaultMenu && !('menuState' in session)) {
         session.menuState = cmdMenu(defaultMenu);

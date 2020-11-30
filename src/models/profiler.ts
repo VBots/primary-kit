@@ -20,31 +20,31 @@ export class Profiler {
     /**
      * Create new instance profiler by `CProfiler`
      */
-    public static Create({
+    public static Create<PF extends Profiler, PFT extends typeof Profiler>({
         context,
         payload = {},
-        MyProfiler = Profiler,
+        MyProfiler = Profiler as PFT,
     }: {
         context: Context;
         payload?: IProfilerPayload | any;
-        MyProfiler?: typeof Profiler;
+        MyProfiler?: PFT;
     }) {
-        return new MyProfiler(context, payload);
+        return new MyProfiler(context, payload) as PF;
     }
 
     /**
      * Create new instance profiler by `CProfiler` from session data in `payload`
      */
-    public static Load({
+    public static Load<PF extends Profiler, PFT extends typeof Profiler>({
         context,
         payload = {},
-        MyProfiler = Profiler,
+        MyProfiler = Profiler as PFT,
     }: {
         context: Context;
         payload: IProfilerPayload | any;
-        MyProfiler?: typeof Profiler;
+        MyProfiler?: PFT;
     }) {
-        return MyProfiler.Create({ context, payload, MyProfiler: MyProfiler });
+        return MyProfiler.Create({ context, payload, MyProfiler: MyProfiler }) as PF;
     }
 
     /**

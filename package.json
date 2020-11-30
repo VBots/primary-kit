@@ -8,8 +8,8 @@
     "license": "MIT",
     "scripts": {
         "up": "npm version patch",
-        "pub_": "yarn _prepare && npm publish --access public",
-        "_prepare": "yarn run rollup:build && yarn run test",
+        "pub_": "npm publish --access public",
+        "prepare": "yarn run rollup:build && yarn run test",
         "build": "yarn run rollup:build",
         "watch": "yarn run rollup:build -w",
         "test": "echo \"Ok\"",
@@ -27,7 +27,7 @@
         "typescript": "^4.1.2"
     },
     "dependencies": {
-        "@vbots/cmenu": "^1.1.0",
+        "@vbots/cmenu": "1.1.1",
         "@vbots/session-storage": "^1.1.0",
         "@vk-io/hear": "^1.0.2",
         "@vk-io/scenes": "^1.0.0",

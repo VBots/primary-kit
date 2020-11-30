@@ -1,14 +1,20 @@
-import { MessageContext } from 'vk-io';
-import { SceneManager, IContext as IContextScene } from '@vk-io/scenes';
-import { SessionManager } from '@vk-io/session';
+import { MessageContext, Context } from 'vk-io';
 import { HearManager } from '@vk-io/hear';
+import { SessionManager } from '@vk-io/session';
 import SessionStorage from '@vbots/session-storage';
+import { SceneManager, IContext as IContextScene, IStepContext } from '@vk-io/scenes';
 import { CMenu, CMenuManager, IKeyboardGenerator, ICustomContext as IContextCustom } from '@vbots/cmenu';
-import { IProfilerPayload, Profiler } from './models';
+import { /* IProfilerPayload ,*/ Profiler } from './models';
 
-export type IContext = MessageContext & IContextScene & IContextCustom;
+export type SessionInContext<PF extends Profiler> = { session: ISession<PF> };
+export type IContext<T = Context, PF extends Profiler = Profiler> = T &
+    IContextCustom &
+    IContextScene &
+    IStepContext &
+    SessionInContext<PF>;
+export type IMessageContext<PF extends Profiler> = IContext<MessageContext, PF>;
 
-export interface IInitFull<PF extends typeof Profiler> extends IDefaultSession<PF> {
+export interface IInitFull<PFT extends typeof Profiler> extends IDefaultSession<PFT> {
     useSession?: boolean;
     useSessionStorage?: boolean;
     useScene?: boolean;
@@ -45,11 +51,11 @@ export interface IUsing<PF extends typeof Profiler> {
     sceneIntercept: ISceneIntercept;
 }
 
-export interface IDefaultSession<PF extends typeof Profiler> {
+export interface IDefaultSession<PFT extends typeof Profiler> {
     defaultMenu?: CMenu;
     callbackDefaultSession?: (context: MessageContext, next: Function) => void;
     useProfiler?: boolean;
-    MyProfiler?: PF;
+    MyProfiler?: PFT;
 }
 
 export interface ISceneIntercept {
@@ -58,10 +64,10 @@ export interface ISceneIntercept {
     ToMenuText?: string;
 }
 
-export interface ISession {
+export interface ISession<PF extends Profiler> {
     pendingTime: number;
     menuState: CMenu['cmd'];
-    profile: Profiler | IProfilerPayload;
+    profile: PF /* | IProfilerPayload */;
 
     [key: string]: any;
 }

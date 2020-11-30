@@ -41,10 +41,10 @@
     "@types/node" "*"
     rollup "^0.63.4"
 
-"@vbots/cmenu@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@vbots/cmenu/-/cmenu-1.1.0.tgz#b9617b569a725e3ce3b9eeaf629da96b8cacf3b2"
-  integrity sha512-DVgApvV+nJ9kmckEr61hiyYmmODpStqup3uqPcLrJTPlbrqN40zq7cx2JAiNBhwny11D88FZiYcfAjpNvQlR9g==
+"@vbots/cmenu@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@vbots/cmenu/-/cmenu-1.1.1.tgz#b4ca5b435c2a37ebb8c8be55455d0df96c6f0127"
+  integrity sha512-7peIWfWZ0UyT/hnk4jXhS9XgWk83AftMp6dZ3OZ/smEjTI1aQn+vgWZKmRCTz3UNS/48gfW1CkWqorerhQzLvQ==
   dependencies:
     "@vk-io/hear" "^1.0.2"
     middleware-io "^2.5.0"

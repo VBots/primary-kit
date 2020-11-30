@@ -3,7 +3,7 @@ import { HearManager } from '@vk-io/hear';
 import { ISessionManagerOptions, SessionManager } from '@vk-io/session';
 import { SceneManager } from '@vk-io/scenes';
 
-import { CMenuManager } from '@vbots/cmenu';
+import { CMenuManager, KitMenu } from '@vbots/cmenu';
 import { SessionStorage } from '@vbots/session-storage';
 import { IInitFull, IKit, ISceneIntercept, IUsing } from './types';
 import {
@@ -14,12 +14,12 @@ import {
 } from './middlewares';
 import { Profiler } from './models';
 
-export class PrimaryKit<PF extends typeof Profiler> {
+export class PrimaryKit<PF extends Profiler, PFT extends typeof Profiler> {
     vk: VK;
     public generated: boolean = false;
 
     private kit: IKit = {};
-    private using: IUsing<PF> = {
+    private using: IUsing<PFT> = {
         session: false,
         sessionStorage: false,
         scene: false,
@@ -47,7 +47,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
         useConversationAppeal = true,
         useCooldown = true,
         useProfiler = true,
-        MyProfiler = Profiler as PF,
+        MyProfiler = Profiler as PFT,
         storageName,
         useHear = true,
         useCMenu = true,
@@ -56,7 +56,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
         useSkipOutMessage = true,
         callbackDefaultSession,
         sceneIntercept = {},
-    }: IInitFull<PF>) {
+    }: IInitFull<PFT>) {
         if (useSession || useSessionStorage) {
             if (useSessionStorage) {
                 this.UseSessionWithStorage(storageName);
@@ -122,7 +122,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     /**
      * UseSessionStorage
      */
-    public UseSessionWithStorage(storageName: IInitFull<PF>['storageName']) {
+    public UseSessionWithStorage(storageName: IInitFull<PFT>['storageName']) {
         const { kit } = this;
         this.using.sessionStorage = true;
         kit.storage = new SessionStorage({ name: storageName });
@@ -154,7 +154,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
     /**
      * UseCMenu
      */
-    public UseCMenu(menuGenerator: IInitFull<PF>['menuGenerator']) {
+    public UseCMenu(menuGenerator: IInitFull<PFT>['menuGenerator']) {
         if (!menuGenerator) {
             throw new Error('menuGenerator is required');
         }
@@ -206,8 +206,8 @@ export class PrimaryKit<PF extends typeof Profiler> {
         defaultMenu,
         callbackDefaultSession,
         useProfiler = true,
-        MyProfiler = Profiler as PF,
-    }: Partial<IInitFull<PF>>) {
+        MyProfiler = Profiler as PFT,
+    }: Partial<IInitFull<PFT>>) {
         this.using.defaultSession = {
             defaultMenu,
             callbackDefaultSession,
@@ -262,6 +262,14 @@ export class PrimaryKit<PF extends typeof Profiler> {
                 context.state.command = messagePayload?.command;
                 context.state.command2 = messagePayload?.command2;
                 context.subCmd = context.state.command2;
+
+                // Handle not_supported_button
+                if (messagePayload?.command === 'not_supported_button') {
+                    context.state.command = KitMenu.Get().NotSupportedBtn.cmd;
+                    let payload = JSON.parse(messagePayload.payload);
+                    context.state.command2 = payload?.command;
+                    context.subCmd = context.state.command2;
+                }
             }
 
             await next();
@@ -275,7 +283,7 @@ export class PrimaryKit<PF extends typeof Profiler> {
             const { defaultMenu, callbackDefaultSession, useProfiler, MyProfiler } = using.defaultSession;
             // Set default session
             vk.updates.use(
-                setDefaultSessionMiddleware({
+                setDefaultSessionMiddleware<PF, PFT>({
                     defaultMenu,
                     callback: callbackDefaultSession,
                     useProfiler: useProfiler as boolean,
